@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 //TODO Transform the code to be used safely in a concurrent context.
 public class Ball {
        //TODO  Find an archive named Ball.png
-	private String Ball = "Ball.png";
+	private String Ball = "Ball.png"; // Nombre del fichero en la ruta src
 
 	private double x,y,dx,dy;
 	private double v,fi;
@@ -18,8 +18,8 @@ public class Ball {
 		image = ii.getImage();
 
 		//TODO Depend of image size
-		IMG_TAM_X = 32;
-		IMG_TAM_Y = 32;
+		IMG_TAM_X = ii.getIconWidth(); // Metodos del manual de Java para la clase ImageIcon que devuelven anchura/altura
+		IMG_TAM_Y = ii.getIconHeight();
 
 
 		x = Billiards.Width/4-16;
@@ -42,6 +42,7 @@ public class Ball {
 		reflect();
 
 		//TODO Check postcondition
+		postCondiciones(x,y);
 	}
 
 	private void reflect() {
@@ -57,6 +58,15 @@ public class Ball {
 		if (Math.abs(y - Board.TOPBOARD) <  Math.abs(dy)) {
 			fi = - fi;
 		}
+	}
+	/**
+	 * Metodo que mediante asserts se cerciona de que las coordenadas tras un movimiento no salgan de tablero
+	 * @param x
+	 * @param y
+	 */
+	private void postCondiciones(double x, double y) {
+		assert x > Board.LEFTBOARD && x < Board.RIGHTBOARD;
+		assert y > Board.BOTTOMBOARD && y < Board.TOPBOARD;
 	}
 
 	public int getX() {
