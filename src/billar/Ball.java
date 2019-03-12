@@ -18,8 +18,8 @@ public class Ball {
 		image = ii.getImage();
 
 		//TODO Depend of image size
-		IMG_TAM_X = ii.getIconWidth(); // Metodos del manual de Java para la clase ImageIcon que devuelven anchura/altura
-		IMG_TAM_Y = ii.getIconHeight();
+		IMG_TAM_X = image.getWidth(null); // Metodos del manual de Java para la clase ImageIcon que devuelven anchura/altura
+		IMG_TAM_Y = image.getHeight(null);
 
 
 		x = Billiards.Width/4-16;

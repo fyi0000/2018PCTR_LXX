@@ -21,8 +21,10 @@ public class Billiards extends JFrame {
 	private Board board;
 
 	// TODO update with number of group label. See practice statement.
-	private final int N_BALL = 4+3;
+	private final int N_BALL = 2 + 3;
 	private Ball[] balls;
+	private Thread hilos[];
+
 
 	public Billiards() {
 
@@ -56,8 +58,9 @@ public class Billiards extends JFrame {
 
 	private void initBalls() {
 		// TODO init balls
+		balls = new Ball[N_BALL];
 		for (int i = 0; i < N_BALL; i++) {
-			balls[i]=new Ball();
+			balls[i] = new Ball();
 		}
 	}
 
@@ -65,7 +68,14 @@ public class Billiards extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Code is executed when start button is pushed
-
+			if(hilos == null) {
+				board.setBalls(balls);
+				hilos = new Thread [N_BALL];
+				for (int i = 0; i < N_BALL; i++) {
+					hilos[i]=crearHilo(balls[i]);
+					hilos[i].start();
+				}
+			}
 		}
 	}
 
@@ -73,8 +83,31 @@ public class Billiards extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Code is executed when stop button is pushed
-
+			if(hilos != null) {
+				for (int i = 0; i < hilos.length; i++) {
+					hilos[i].interrupt();
+				}
+				hilos = null;
+			}
 		}
+	}
+
+	private Thread crearHilo(Ball ball) {
+		Runnable bucle = new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					ball.move();
+					board.repaint();
+					try {
+						Thread.sleep(18);
+					} catch (InterruptedException e) {
+					}
+				}
+			}
+
+		};
+		return new Thread(bucle);
 	}
 
 	public static void main(String[] args) {
